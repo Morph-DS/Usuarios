@@ -1,0 +1,66 @@
+/* Estilo para el contenedor principal */
+#Clima-container {
+    width: 300px; /* Ancho del contenedor */
+    height: 60px; /* Altura fija del contenedor */
+    padding: 5px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+    font-family: 'Arial', sans-serif; /* Fuente legible */
+    text-align: center; /* Centrado de texto */
+    margin: 60px auto 0; /* Margin-top de 60px para separar de la parte superior */
+    max-width: 350px; /* Ancho máximo */
+    display: flex; /* Para alinear las columnas */
+    justify-content: space-between; /* Espacio entre las dos columnas */
+    align-items: center; /* Centrado vertical */
+    overflow: hidden; /* Ocultar cualquier contenido que sobresalga del contenedor */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    display: none;
+}
+
+/* Estilo para la columna izquierda (título e icono) */
+#Clima-container .left-column {
+    display: flex;
+    flex-direction: column; /* Coloca el título y el icono uno debajo del otro */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 40%; /* Limitar el tamaño de la columna izquierda */
+}
+
+/* Estilo para la columna derecha (temperatura, descripción, humedad) */
+#Clima-container .right-column {
+    display: flex;
+    flex-direction: column; /* Coloca los datos uno debajo del otro */
+    justify-content: center;
+    align-items: flex-start; /* Alinea los datos hacia la izquierda */
+    text-align: left;
+    width: 60%; /* Limitar el tamaño de la columna derecha */
+}
+
+/* Estilo para el título */
+#Clima-container h3 {
+    color: #333; /* Color del texto */
+    font-size: 10px; /* Tamaño del título */
+    margin-bottom: 5px; /* Espacio debajo del título */
+    font-weight: normal; /* Ajuste de peso de fuente */
+}
+
+/* Estilo para el icono del clima */
+#Clima-container img {
+    width: 20px; /* Tamaño más pequeño del icono */
+    height: 20px; /* Tamaño más pequeño del icono */
+    border-radius: 50%; /* Hacer el icono redondeado */
+    margin-bottom: 5px; /* Espacio debajo del icono */
+}
+
+/* Estilo para los detalles del clima (temperatura, descripción, humedad) */
+#Clima-container p {
+    font-size: 10px; /* Tamaño de la fuente más pequeño */
+    color: #555; /* Color de texto gris oscuro */
+    margin: 2px 0; /* Menor espacio entre las líneas */
+}
+
+/* Estilo de los textos de humedad y descripción */
+#Clima-container p:last-child {
+    font-weight: bold; /* Resaltar la última línea */
+    color: #4CAF50; /* Color verde para resaltar */
+}

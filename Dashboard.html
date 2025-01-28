@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="icon" href="Img/Logo-Empresa.png" type="image/png">
+  <link rel="stylesheet" href="Css/Dashboard/EstilosGenerales.css">
+  <link rel="stylesheet" href="Css/Dashboard/Header.css">
+  <link rel="stylesheet" href="Css/Dashboard/Sidebar-header.css">
+  <link rel="stylesheet" href="Css/Dashboard/Contenedor-principal.css">
+  <link rel="stylesheet" href="Css/Dashboard/Contenedor-seccion.css">
+  <link rel="stylesheet" href="Css/Dashboard/Contenedor-Submenu.css">
+  <link rel="stylesheet" href="Css/Dashboard/Logout-confirmation.css">
+  <link rel="stylesheet" href="Css/Dashboard/Opcion-Usuario.css">
+  <link rel="stylesheet" href="Css/Dashboard/clima.css">
+</head>
+<body>
+  
+  <header class="header" id="header">
+
+    <div class="user-container" id="user-container">
+      <div id="user-icon" class="user-icon">
+        <img src="Img/Usuario-Hombre.png" alt="Icono de Usuario" />
+      </div>
+      <div id="options-container" class="options-container hidden">
+        <button id="change-password-btn">Cambiar Contraseña</button>
+        <a href="#" class="formulario-link" data-target="Components/perfil-usuario.html">
+          Datos personales
+        </a>
+      </div>
+    </div>
+    
+    <div id="user-name-container" class="user-name">
+      <span id="user-name-span">Cargando...</span>
+    </div>
+  
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js';
+      
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCBrjwZqX50L-vhhSQL9TZlJCNQDIEun1c",
+            authDomain: "webclinico-92097.firebaseapp.com",
+            projectId: "webclinico-92097",
+            storageBucket: "webclinico-92097.firebasestorage.app",
+            messagingSenderId: "1097682664881",
+            appId: "1:1097682664881:web:41553a22a93a8d29985190",
+            measurementId: "G-K9DFW93BNR"
+        };
+    
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    
+        // Obtener el ID del usuario desde sessionStorage
+        const userId = sessionStorage.getItem('userId');
+      
+        // Depuración: Verificar que el ID del usuario está siendo recuperado correctamente
+        console.log("userId recuperado desde sessionStorage:", userId);
+      
+        if (userId) {
+            async function obtenerNombreCompleto() {
+                try {
+                    // Consultar el documento del usuario usando el ID de Firestore
+                    const userRef = doc(db, 'usuarios', userId); // 'userId' es el identificador del usuario
+                    const docSnap = await getDoc(userRef);
+    
+                    if (docSnap.exists()) {
+                        // Obtener el nombre completo del documento
+                        const nombreCompleto = docSnap.data().nombreCompleto;
+                        // Mostrar el nombre completo en el span
+                        document.getElementById('user-name-span').textContent = nombreCompleto;
+                    } else {
+                        // Si el documento no existe, redirigir al login
+                        alert("Usuario no encontrado.");
+                        window.location.href = 'index.html'; // Redirigir al login si no se encuentra el documento
+                    }
+                } catch (error) {
+                    console.error("Error al obtener el nombre completo:", error);
+                    window.location.href = 'index.html'; // Redirigir al login en caso de error
+                }
+            }
+    
+            // Llamar a la función para obtener el nombre completo
+            obtenerNombreCompleto();
+        } else {
+            // Si no hay sesión activa, redirigir al login
+            window.location.href = 'index.html'; // Redirigir si no hay sesión activa
+        }
+    </script>
+
+    <div id="logo-container" class="logo">
+        <img src="Img/Logo-Empresa.png" alt="Logo" class="logo-img" id="logo-img"> 
+        Sistema Web Clínico
+    </div>
+    
+    <div id="Clima-container" class="Clima">
+      <div id="clima">
+          <!-- Aquí irá el contenido generado por JavaScript -->
+      </div>
+  </div>
+  
+
+
+    <div id="date-container" class="date">
+      <div id="date"></div>
+  </div>
+  
+  <button id="logout-btn" class="logout-btn" aria-label="Cerrar sesión">
+    <i class="fas fa-sign-out-alt"></i> Salir
+  </button>
+  
+  <div id="logout-confirmation" class="logout-confirmation-container">
+    <div class="logout-confirmation-content">
+      <h3><i class="fas fa-exclamation-triangle"></i> ¿Estás seguro de que deseas cerrar sesión?</h3>
+      <div class="logout-confirmation-buttons">
+        <button id="confirm-logout" class="btn-confirm">Cerrar sesión</button>
+        <button id="cancel-logout" class="btn-cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  
+</header>
+  <nav id="sidebar" class="sidebar open"> 
+    <div class="sidebar-header">
+      <ul>
+        <li>
+          <a href="javascript:void(0)" onclick="mostrarPaginaPrincipal()">
+            <i class="fas fa-home"></i> Página Principal
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="contenedor-principal">
+      <ul>
+
+        <li>
+          <a href="javascript:void(0)" onclick="showSection('consignacion')">
+            <i class="fas fa-box" id="icons-icon-consignacion"></i> 
+              Consignación
+            <i class="fas fa-check-circle" id="check-icon-consignacion"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="javascript:void(0)" onclick="showSection('prestaciones')">
+            <i class="fas fa-clipboard-list" id="icons-icon-prestaciones"></i> 
+            Prestaciones
+            <i class="fas fa-check-circle" id="check-icon-prestaciones"></i>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+
+    
+
+
+    <div id="consignacion" class="contenedor-seccion" style="display: none;"> 
+      <h3 onclick="volverAlMenu()">
+        <span>Consignación</span>
+        <i class="fas fa-check-circle" id="icon-consignacion-check"></i>
+      </h3>
+
+      <ul>
+        <li>
+          <a href="#" class="formulario-link" data-target="Project-folder/Modulo 2/M2-Registros.html">
+            <i class="fas fa-file-alt" id="icon-empresas"></i> Registros
+            <i class="fas fa-caret-right" id="icon-empresas-caret"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="formulario-link" data-target="project-folder/404.html">
+            <i class="fas fa-credit-card" id="icon-ingresos"></i> Ingresos
+            <i class="fas fa-caret-right" id="icon-ingresos-caret"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="formulario-link" data-target="project-folder/404.html">
+            <i class="fas fa-clock" id="icon-pendiente"></i> Pendiente
+            <i class="fas fa-caret-right" id="icon-pendiente-caret"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="formulario-link" data-target="project-folder/404.html">
+            <i class="fas fa-clipboard-check" id="icon-kardex"></i> Kardex
+            <i class="fas fa-caret-right" id="icon-kardex-caret"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="formulario-link" data-target="project-folder/404.html">
+            <i class="fas fa-box" id="icon-inventario"></i> Inventario
+            <i class="fas fa-caret-right" id="icon-inventario-caret"></i>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+
+    <div id="prestaciones" class="contenedor-seccion" style="display: none;"> 
+      <h3 onclick="volverAlMenu()">
+        <span>Prestaciones</span>
+        <i class="fas fa-check-circle" id="icon-prestaciones-check"></i>
+      </h3>
+      
+      <ul>
+        <li>
+          <a href="#" class="formulario-link" data-target="project-folder/404.html">
+            <i class="fas fa-file-signature" id="icon-codigos"></i> Códigos
+            <i class="fas fa-caret-right" id="icon-codigos-caret"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="formulario-link" data-target="project-folder/404.html">
+            <i class="fas fa-users" id="icon-pacientes"></i> Pacientes
+            <i class="fas fa-caret-right" id="icon-pacientes-caret"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="formulario-link" data-target="Project-folder/Modulo 4/M4-Medicos.html">
+            <i class="fas fa-user-md" id="icon-medicos"></i> Médicos
+            <i class="fas fa-caret-right" id="icon-medicos-caret"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="formulario-link" data-target="Project-folder/Modulo 4/M4-Previsiones.html">
+            <i class="fas fa-calendar-check" id="icon-previsiones"></i> Previsiones
+            <i class="fas fa-caret-right" id="icon-previsiones-caret"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="formulario-link" data-target="Project-folder/Modulo 4/M4-Empresas.html">
+            <i class="fas fa-truck" id="icon-empresas"></i> Empresas
+            <i class="fas fa-caret-right" id="icon-empresas-caret"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="formulario-link" data-target="Project-folder/Modulo 4/M4-Contactos.html">
+            <i class="fas fa-phone" id="icon-contactos"></i> Contactos
+            <i class="fas fa-caret-right" id="icon-contactos-caret"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-informacion">
+      <p></p>
+      <div id="clima"></div>
+    </div>
+
+    <div class="sidebar-footer">
+      <p>Versión 1.0.0 / 22-01-2025</p>
+    </div>
+  </nav>
+
+  <main class="main-content" id="main-content">
+
+  </main>
+
+  <script src="Script/Dashboard/Clima.js"></script>
+  <script src="Script/Dashboard/main.js"></script>
+  <script src="Script/Dashboard/MostrarFecha.js"></script>
+  <script src="Script/Dashboard/ToggleSidebar.js"></script>
+  <script src="Script/Dashboard/formulario-link.js"></script>
+  <script src="Script/Dashboard/logout.js"></script>
+  <script src="Script/Dashboard/Option-Usuario.js"></script>
+
+
+</body>
+</html>
